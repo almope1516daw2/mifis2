@@ -97,3 +97,17 @@ exports.addRegister = ({name, surname, mail, image, salt, hash}) => {
         });
     });
 };
+
+
+exports.searchLogin = ({mail, salt, hash}) => {
+    return new Promise((resolve, reject) => {
+
+        User.findOne({mail: mail}, function (err, person) {
+            //console.log(person.mail);
+            err ? reject(err) : resolve(person);
+        });
+    });
+
+
+
+}

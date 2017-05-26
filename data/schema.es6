@@ -133,6 +133,31 @@ let AddRegisterMutation = mutationWithClientMutationId({
     mutateAndGetPayload: User.addRegister
 });
 
+
+
+let SearchLoginMutation = mutationWithClientMutationId({
+    name: 'SearchLogin',
+    inputFields: {
+
+        mail: {type: new GraphQLNonNull(GraphQLString)},
+        salt: {type: GraphQLString},
+        hash: {type: GraphQLString}
+
+
+    },
+
+    outputFields: {
+        user: {
+            type: UserType,
+            resolve: ({id}) => {
+                return User.getUserById(id)
+            }
+        }
+    },
+
+    mutateAndGetPayload: User.searchLogin
+});
+
 let RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
 
@@ -150,6 +175,7 @@ let RootMutation = new GraphQLObjectType({
     fields: () => ({
 
         addRegister: AddRegisterMutation,
+        searchLogin: SearchLoginMutation,
     })
 });
 

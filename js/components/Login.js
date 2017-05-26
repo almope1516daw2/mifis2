@@ -1,9 +1,10 @@
 import Relay from "react-relay";
-import RegisterMutation from "./RegisterMutation.js";
+import LoginMutation from "./LoginMutation.js";
 import React from "react";
 import * as ReactBootstrap from "react-bootstrap";
 import FaEye from "react-icons/fa/eye";
-
+import pbkdf2 from "pbkdf2";
+import randomBytes from "randombytes";
 
 class Login extends React.Component {
 
@@ -15,14 +16,20 @@ class Login extends React.Component {
             hash: "",
             salt: "",
         };
+
     }
 
+    setPassword = (password) => {
+
+        this.state.salt = randomBytes(16).toString('hex');
+        this.state.hash = pbkdf2.pbkdf2Sync(password, this.state.salt, 1000, 64).toString('hex');
+
+    };
     accessLogin = () => {
-        Relay.Store.update(new RegisterMutation({
-            name: this.state.name,
-            surname: this.state.surname,
+
+        this.setPassword(this.state.password);
+        Relay.Store.update(new LoginMutation({
             mail: this.state.mail,
-            image: this.state.imgPreview,
             salt: this.state.salt,
             hash: this.state.hash
         }));
@@ -45,6 +52,7 @@ class Login extends React.Component {
     };
 
     mouseoverPass = () => {
+
         document.getElementById('inputPasswordLogin').type = "text";
         if (document.getElementById('inputPasswordLogin').value !== "") {
             document.getElementById('inputPasswordLogin').style.fontFamily = "Montserrat";
@@ -109,7 +117,7 @@ exports.Login = Relay.createContainer(Login, {
         mail
         salt
         hash
-       ${RegisterMutation.getFragment('user')}
+       ${LoginMutation.getFragment('user')}
       }
     `
     }

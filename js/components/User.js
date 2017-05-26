@@ -1,12 +1,14 @@
 import Relay from "react-relay";
 import React from "react";
 import {Register} from "./Register.js";
-
+import {Login} from "./Login.js";
+//<Register user={null}/>
 class User extends React.Component {
     render() {
         return (
             <div>
-                <Register user={null}/>
+
+                <Login user={null}/>
 
             </div>
         );

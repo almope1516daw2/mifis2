@@ -17,7 +17,7 @@ graphQLServer.use('/', graphQLHTTP({schema: Schema, pretty: true}));
 try {
     graphQLServer.listen(GRAPHQL_PORT, () => {
         console.log(`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`);
-        mongoose.connect('mongodb://192.168.99.100:32768/test');
+        mongoose.connect('mongodb://localhost:27017/test');
     });
 } catch (err) {
 
